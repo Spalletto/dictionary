@@ -19,7 +19,11 @@ def get_definition(word):
     
 def main():
     user_word = input("Enter a word: ")
-    print(get_definition(user_word))
+    output = get_definition(user_word)
+
+    if type(output) == list:
+        for item in output:
+            print('-', item)
 
 if __name__ == "__main__":
     main()
