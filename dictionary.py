@@ -12,10 +12,18 @@ def get_definition(word):
         return data[word.title()] 
     elif word.upper() in data:
         return data[word.upper()]
-    elif len(get_close_matches(word, data.keys(), cutoff=0.75)) > 0:
-        return ("Did you mean {alt_word} instead?".format(alt_word=get_close_matches(word, data.keys(), cutoff=0.75)[0])) 
     else: 
-        return ("There is no the word in the dictionary. Please, check it or try something else.")
+        correction_words = get_close_matches(word, data.keys(), cutoff=0.75)
+        if len(correction_words) > 0:
+            action = input("Did you mean {alt_word} instead? [y or n]: ".format(alt_word=get_close_matches(word, data.keys(), cutoff=0.75)[0]))
+            if action == 'y':
+                return get_definition(correction_words[0])
+            elif action == 'n':
+                return ("There is no such a word in the dictionary.")
+            else:
+                return ("I don't understand you, sorry")
+        else:
+            return ("There is no such a word, try something else")
     
 def main():
     user_word = input("Enter a word: ")
@@ -24,6 +32,8 @@ def main():
     if type(output) == list:
         for item in output:
             print('-', item)
+    else:
+        print(output)
 
 if __name__ == "__main__":
     main()
